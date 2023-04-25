@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  app:
+    container_name: api_gerenciaAqui
+    restart: always
+    build: .
+    depends_on:
+      - database
+    environment:
+      - spring.datasource.url=jdbc:postgresql://database:5432/gerenciaAqui
+      - spring.datasource.username=gerenciaAqui
+      - spring.datasource.password=gerenciaAqui
+      - spring.jpa.hibernate.ddl-auto=update
+    ports:
+      - 3000:8080
+  database:
+    container_name: database_gerenciaAqui
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: gerenciaAqui
+      POSTGRES_USER: gerenciaAqui
+      POSTGRES_PASSWORD: gerenciaAqui
+    ports:
+    - 5433:5432
+    volumes:
+      - db_data:/var/lib/postgresql/database_gerenciaAqui
+  
+
+volumes:
+  db_data:
+    driver: local
