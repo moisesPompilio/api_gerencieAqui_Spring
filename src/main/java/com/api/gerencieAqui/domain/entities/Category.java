@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.api.gerencieAqui.application.DTO.input.InputCategoryDTO;
+import com.api.gerencieAqui.core.generic.model.GenericEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "categories")
-public class Category {
+public class Category implements GenericEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")

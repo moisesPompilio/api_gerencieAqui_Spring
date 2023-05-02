@@ -1,6 +1,7 @@
 package com.api.gerencieAqui.application.DTO.input;
 
 
+import com.api.gerencieAqui.core.generic.model.DataTransferObject;
 import com.api.gerencieAqui.domain.entities.Category;
 import com.api.gerencieAqui.infrastructure.util.Conversor;
 
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InputCategoryDTO {
+public class InputCategoryDTO implements DataTransferObject {
     @NotEmpty
     private String name;
 

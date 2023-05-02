@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.api.gerencieAqui.application.DTO.input.InputCategoryDTO;
 import com.api.gerencieAqui.application.useCase.CategoryUseCase.Error.DuplicateCategoryException;
 import com.api.gerencieAqui.domain.entities.Category;
-import com.api.gerencieAqui.infrastructure.repositories.CategoryRepository;
+import com.api.gerencieAqui.domain.repositories.CategoryRepository;
 
 @Service
 public class CreateCategoryUseCase {
