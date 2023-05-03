@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.api.gerencieAqui.infrastructure.repository.CustomJpaRepositoryImpl;
 
+
 @SpringBootApplication
 @EnableJpaRepositories(repositoryBaseClass = CustomJpaRepositoryImpl.class)
 public class GerencieAquiApplication {

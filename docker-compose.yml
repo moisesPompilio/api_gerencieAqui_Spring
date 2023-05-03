@@ -26,6 +26,10 @@ services:
     - 5433:5432
     volumes:
       - db_data:/var/lib/postgresql/database_gerenciaAqui
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
   
 
 volumes:

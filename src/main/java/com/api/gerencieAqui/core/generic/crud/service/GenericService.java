@@ -6,6 +6,10 @@ import com.api.gerencieAqui.domain.exception.EntidadeEmUsoException;
 import com.api.gerencieAqui.domain.exception.EntidadeNaoEncontradaException;
 import com.api.gerencieAqui.domain.exception.NegocioException;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +27,11 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
 
     protected final GenericRepository<DomainModel, UUID> repositorio;
 
+    
     public List<DomainModel> listar() {
         return repositorio.findAll();
     }
-
+    @Cacheable(value = "genericCache", key = "#domainModelCodigo", unless = "#result == null")
     public DomainModel buscar(String domainModelCodigo) {
         return buscarOuFalhar(domainModelCodigo);
     }
@@ -40,6 +45,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
         }
     }
 
+    @CacheEvict(value = "genericCache", key = "#id")
     @Transactional
     public void excluir(String id) {
         try{
@@ -51,7 +57,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
             throw new EntidadeEmUsoException();
         }
     }
-
+    @Cacheable(value = "genericCache", key = "#id", unless = "#result == null")
     private DomainModel buscarOuFalhar(String id) {
         return repositorio.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(id));
@@ -64,6 +70,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
     }
 
     @Transactional
+    //@CachePut(value = "genericCache", key = "#domainModel.id", unless = "#result == null")
     private DomainModel salvarERecarregar(DomainModel domainModel) {
         return recarregar(repositorio.save(domainModel));
     }   
