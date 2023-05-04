@@ -45,12 +45,12 @@ public abstract class GenericController<
         return mapper.toOutput(domainModel);
     }
 
-    // @ResponseStatus(HttpStatus.CREATED)
-    // public List<OutputModel> salvarLista(List<InputModel> inputModelList){
-    //     List<DomainModel> domainModelList = mapper.toDomainCollection(inputModelList);
-    //     service.salvarLista(domainModelList);
-    //     return mapper.toOutputCollection(domainModelList);
-    // }
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<OutputModel> salvarLista(List<InputModel> inputModelList){
+        List<DomainModel> domainModelList = mapper.toDomainCollection(inputModelList);
+        service.salvarLista(domainModelList);
+        return mapper.toOutputCollection(domainModelList);
+    }
 
     @Transactional
     public OutputModel atualizar(String codigo,

@@ -9,13 +9,14 @@ import java.util.ArrayList;
 public abstract class GenericSpec<DomainModel extends GenericEntity> {
 
     public Specification<DomainModel> usandoFiltro(GenericFilter<DomainModel> genericFilter){
-        return ((root, query, builder) -> {
+        return Specification.where((root, query, builder) -> {
             // Get nos subrecursos
             var predicates = new ArrayList<Predicate>();
-
+    
             genericFilter.criarFiltro(predicates, builder, root);
-
+    
             return builder.and(predicates.toArray(new Predicate[0]));
         });
     }
+    
 }

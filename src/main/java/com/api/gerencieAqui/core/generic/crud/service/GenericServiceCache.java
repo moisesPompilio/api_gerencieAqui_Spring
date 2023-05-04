@@ -1,26 +1,24 @@
 package com.api.gerencieAqui.core.generic.crud.service;
 
+import java.util.UUID;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+
 import com.api.gerencieAqui.core.generic.crud.repository.GenericRepository;
 import com.api.gerencieAqui.core.generic.model.GenericEntity;
 import com.api.gerencieAqui.domain.exception.EntidadeEmUsoException;
 import com.api.gerencieAqui.domain.exception.EntidadeNaoEncontradaException;
 import com.api.gerencieAqui.domain.exception.NegocioException;
+import java.util.List;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.UUID;
-
-/**
- * Classe que representa um serviço REST genérico.
- *
- * @author Moises Alexandre Pompilio da osta
- */
 @RequiredArgsConstructor
-public abstract class GenericService<DomainModel extends GenericEntity> {
+public abstract class GenericServiceCache<DomainModel extends GenericEntity> {
 
     protected final GenericRepository<DomainModel, UUID> repositorio;
 
@@ -28,6 +26,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
         return repositorio.findAll();
     }
 
+    @Cacheable(value = "genericCache", key = "#domainModelCodigo", unless = "#result == null")
     public DomainModel buscar(String domainModelCodigo) {
         return buscarOuFalhar(domainModelCodigo);
     }
@@ -40,8 +39,8 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
             throw new NegocioException(ex);
         }
     }
-    @Transactional
-    public List<DomainModel> salvarLista(List<DomainModel> listDomainModel) {
+
+    public List<DomainModel> salvarLista(List<DomainModel> listDomainModel ){
         try {
             return repositorio.saveAll(listDomainModel);
         } catch (DataIntegrityViolationException ex) {
@@ -49,6 +48,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
         }
     }
 
+    @CacheEvict(value = "genericCache", key = "#id")
     @Transactional
     public void excluir(String id) {
         try {
@@ -61,6 +61,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
         }
     }
 
+    @Cacheable(value = "genericCache", key = "#id", unless = "#result == null")
     private DomainModel buscarOuFalhar(String id) {
         return repositorio.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(id));
@@ -73,6 +74,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
     }
 
     @Transactional
+    @CachePut(value = "genericCache", key = "#domainModel.id", unless = "#result == null")
     private DomainModel salvarERecarregar(DomainModel domainModel) {
         return recarregar(repositorio.save(domainModel));
     }

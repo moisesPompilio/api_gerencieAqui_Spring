@@ -22,9 +22,5 @@ public class CategoryControllerGeneric extends BasicController<Category, InputCa
         super(servico, mapper);
     }
 
-    @Override
-    public java.util.List<OutputCategory> salvarLista(java.util.@Valid List<InputCategoryDTO> inputModel) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'salvarLista'");
-    }
+    
 }

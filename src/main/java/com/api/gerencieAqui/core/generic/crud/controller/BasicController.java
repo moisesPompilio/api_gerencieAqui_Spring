@@ -32,10 +32,10 @@ public abstract class BasicController<DomainModel extends GenericEntity, InputMo
         return super.salvar(inputModel);
     }
 
-    // @Override
-    // public List<OutputModel> salvarLista(List<InputModel> inputModelList){
-    // return super.salvarLista(inputModelList);
-    // }
+    @Override
+    public List<OutputModel> salvarLista(List<InputModel> inputModelList){
+    return super.salvarLista(inputModelList);
+    }
 
     @Override
     public OutputModel atualizar(String codigo, InputModel inputModel) {
