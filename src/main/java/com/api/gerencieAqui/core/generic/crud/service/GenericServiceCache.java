@@ -17,39 +17,17 @@ import java.util.List;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-public abstract class GenericServiceCache<DomainModel extends GenericEntity> {
 
-    protected final GenericRepository<DomainModel, UUID> repositorio;
+public abstract class GenericServiceCache<DomainModel extends GenericEntity> extends GenericService<DomainModel> {
 
-    public List<DomainModel> listar() {
-        return repositorio.findAll();
+    public GenericServiceCache(GenericRepository<DomainModel, UUID> repositorio) {
+        super(repositorio);
     }
 
-    @Cacheable(value = "genericCache", key = "#domainModelCodigo", unless = "#result == null")
-    public DomainModel buscar(String domainModelCodigo) {
-        return buscarOuFalhar(domainModelCodigo);
-    }
-
-    @Transactional
-    public DomainModel salvar(DomainModel domainModel) {
-        try {
-            return salvarERecarregar(domainModel);
-        } catch (DataIntegrityViolationException ex) {
-            throw new NegocioException(ex);
-        }
-    }
-
-    public List<DomainModel> salvarLista(List<DomainModel> listDomainModel ){
-        try {
-            return repositorio.saveAll(listDomainModel);
-        } catch (DataIntegrityViolationException ex) {
-            throw new NegocioException(ex);
-        }
-    }
-
+    
     @CacheEvict(value = "genericCache", key = "#id")
     @Transactional
+    @Override
     public void excluir(String id) {
         try {
             repositorio.deleteById(UUID.fromString(id));
@@ -61,22 +39,5 @@ public abstract class GenericServiceCache<DomainModel extends GenericEntity> {
         }
     }
 
-    @Cacheable(value = "genericCache", key = "#id", unless = "#result == null")
-    private DomainModel buscarOuFalhar(String id) {
-        return repositorio.findById(UUID.fromString(id))
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(id));
-    }
-
-    @Transactional
-    public DomainModel recarregar(DomainModel domainModel) {
-        repositorio.flush();
-        return repositorio.refresh(domainModel);
-    }
-
-    @Transactional
-    @CachePut(value = "genericCache", key = "#domainModel.id", unless = "#result == null")
-    private DomainModel salvarERecarregar(DomainModel domainModel) {
-        return recarregar(repositorio.save(domainModel));
-    }
 
 }

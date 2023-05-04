@@ -21,6 +21,5 @@ public class CategoryControllerGeneric extends BasicController<Category, InputCa
     public CategoryControllerGeneric(CategoryService servico, CategoryMapper mapper) {
         super(servico, mapper);
     }
-
-    
+  
 }
