@@ -1,21 +1,15 @@
 package com.api.gerencieAqui.core.generic.crud.service;
 
 import java.util.UUID;
+import java.util.List;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.cache.annotation.Caching;
 
 import com.api.gerencieAqui.core.generic.crud.repository.GenericRepository;
 import com.api.gerencieAqui.core.generic.model.GenericEntity;
-import com.api.gerencieAqui.domain.exception.EntidadeEmUsoException;
-import com.api.gerencieAqui.domain.exception.EntidadeNaoEncontradaException;
-import com.api.gerencieAqui.domain.exception.NegocioException;
-import java.util.List;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 
 
 public abstract class GenericServiceCache<DomainModel extends GenericEntity> extends GenericService<DomainModel> {
@@ -24,19 +18,37 @@ public abstract class GenericServiceCache<DomainModel extends GenericEntity> ext
         super(repositorio);
     }
 
+    @Override
+    @Cacheable(value = "genericCacheList", unless = "#result == null")
+    public List<DomainModel> listar() {
+        return super.listar();
+    }
     
-    @CacheEvict(value = "genericCache", key = "#id")
-    @Transactional
+    @Override
+    @Cacheable(value = "genericCache", key = "#id", unless = "#result == null")
+    public DomainModel buscar(String id) {
+        return super.buscar(id);
+    }
+
+    @CacheEvict("genericCacheList")
+    @CachePut(value = "genericCache", key = "#id", unless = "#result == null")
+    public DomainModel recarregar(DomainModel domainModel) {
+        return super.recarregar(domainModel);
+    }
+
+    @CacheEvict(value = "genericCacheList", allEntries = true)
+    public DomainModel salvar(DomainModel domainModel) {
+        return super.salvar(domainModel);
+    }
+
+    
+    @Caching(evict = { 
+        @CacheEvict(value = "genericCache", key = "#id"), 
+        @CacheEvict(value = "genericCacheList", allEntries = true)
+    })
     @Override
     public void excluir(String id) {
-        try {
-            repositorio.deleteById(UUID.fromString(id));
-            repositorio.flush();
-        } catch (EmptyResultDataAccessException ex) {
-            throw new EntidadeNaoEncontradaException(id);
-        } catch (DataIntegrityViolationException ex) {
-            throw new EntidadeEmUsoException();
-        }
+        super.excluir(id);
     }
 
 
