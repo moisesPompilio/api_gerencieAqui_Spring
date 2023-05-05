@@ -11,7 +11,6 @@ import com.api.gerencieAqui.application.service.CategoryService;
 import com.api.gerencieAqui.core.generic.crud.controller.BasicController;
 import com.api.gerencieAqui.domain.entities.Category;
 
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/CategoryGeneric")
