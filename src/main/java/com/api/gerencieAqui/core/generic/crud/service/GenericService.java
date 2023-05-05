@@ -61,7 +61,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
         }
     }
 
-    private DomainModel buscarOuFalhar(String id) {
+    protected DomainModel buscarOuFalhar(String id) {
         return repositorio.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(id));
     }
@@ -73,7 +73,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
     }
 
     @Transactional
-    private DomainModel salvarERecarregar(DomainModel domainModel) {
+    protected DomainModel salvarERecarregar(DomainModel domainModel) {
         return recarregar(repositorio.save(domainModel));
     }
 
