@@ -4,6 +4,7 @@ import com.api.gerencieAqui.core.generic.crud.repository.GenericRepository;
 import com.api.gerencieAqui.core.generic.model.GenericEntity;
 import com.api.gerencieAqui.domain.exception.EntidadeEmUsoException;
 import com.api.gerencieAqui.domain.exception.EntidadeNaoEncontradaException;
+import com.api.gerencieAqui.domain.exception.IdInvalido;
 import com.api.gerencieAqui.domain.exception.NegocioException;
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +41,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
             throw new NegocioException(ex);
         }
     }
+
     @Transactional
     public List<DomainModel> salvarLista(List<DomainModel> listDomainModel) {
         try {
@@ -58,12 +60,18 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
             throw new EntidadeNaoEncontradaException(id);
         } catch (DataIntegrityViolationException ex) {
             throw new EntidadeEmUsoException();
+        } catch (IllegalArgumentException ex) {
+            throw new IdInvalido(id);
         }
     }
 
     protected DomainModel buscarOuFalhar(String id) {
-        return repositorio.findById(UUID.fromString(id))
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(id));
+        try {
+            return repositorio.findById(UUID.fromString(id))
+                    .orElseThrow(() -> new EntidadeNaoEncontradaException(id));
+        } catch (IllegalArgumentException ex) {
+            throw new IdInvalido(id);
+        }
     }
 
     @Transactional
