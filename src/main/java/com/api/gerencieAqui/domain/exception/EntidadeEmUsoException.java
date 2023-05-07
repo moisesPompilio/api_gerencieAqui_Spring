@@ -11,7 +11,7 @@ public class EntidadeEmUsoException extends NegocioException {
 		super(EM_USO);
 	}
 
-	public EntidadeEmUsoException(Class classe, Long codigo) {
+	public EntidadeEmUsoException(Class classe, String codigo) {
 		super(String.format("O objeto %s de código %d não pode ser removido, pois está em uso", classe.getSimpleName(), codigo));
 	}
 

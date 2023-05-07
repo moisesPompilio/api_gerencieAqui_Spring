@@ -10,7 +10,7 @@ public interface GetAnnotations<OutputModel>{
     @GetMapping
     public List<OutputModel> listar();
 
-    @GetMapping("/{codigo}")
-    public OutputModel buscar(@PathVariable String codigo);
+    @GetMapping("/{id}")
+    public OutputModel buscar(@PathVariable String id);
 
 }

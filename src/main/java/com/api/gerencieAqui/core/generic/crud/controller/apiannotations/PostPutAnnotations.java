@@ -14,10 +14,10 @@ public interface PostPutAnnotations<InputModel, OutputModel> {
     @PostMapping("salvarLista")
     public List<OutputModel> salvarLista(@RequestBody @Valid List<InputModel> inputModel);
 
-    @PutMapping("/{codigo}")
-    public OutputModel atualizar(@PathVariable String codigo, @RequestBody @Valid InputModel inputModel);
+    @PutMapping("/{id}")
+    public OutputModel atualizar(@PathVariable String id, @RequestBody @Valid InputModel inputModel);
 
-    @PatchMapping("/{codigo}")
-    public OutputModel atualizarParcial(@PathVariable String codigo, @RequestBody HashMap<String, Object> fields);
+    @PatchMapping("/{id}")
+    public OutputModel atualizarParcial(@PathVariable String id, @RequestBody HashMap<String, Object> fields);
 
 }

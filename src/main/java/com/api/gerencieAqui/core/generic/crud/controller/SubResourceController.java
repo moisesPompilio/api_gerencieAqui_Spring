@@ -33,33 +33,33 @@ public abstract class SubResourceController<
     protected GenericMapper<ChildModel, ChildInputModel, ChildOutputModel> childMapper;
 
     @GetMapping
-    public List<ChildOutputModel> listarDomainModel(@PathVariable String codigo) {
-        FatherModel fatherModel = fatherService.buscar(codigo);
+    public List<ChildOutputModel> listarDomainModel(@PathVariable String id) {
+        FatherModel fatherModel = fatherService.buscar(id);
         return childMapper.toOutputCollection((Collection<ChildModel>) fatherModel.listarSubRecurso(nomeSubRecurso));
     }
 
-    @GetMapping("/{childCodigo}")
-    public List<ChildOutputModel> buscarDomainModel(@PathVariable String codigo, @PathVariable String childCodigo) {
-        FatherModel fatherModel = fatherService.buscar(codigo);
-        ChildModel childModel = childService.buscar(childCodigo);
+    @GetMapping("/{childId}")
+    public List<ChildOutputModel> buscarDomainModel(@PathVariable String id, @PathVariable String childId) {
+        FatherModel fatherModel = fatherService.buscar(id);
+        ChildModel childModel = childService.buscar(childId);
         return childMapper.toOutputCollection((Collection<ChildModel>) fatherModel.buscarSubRecurso(nomeSubRecurso, childModel));
     }
 
-    @PostMapping("/{childCodigo}")
+    @PostMapping("/{childId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void associarDomainModel(@PathVariable String codigo, @PathVariable String childCodigo) {
-        FatherModel fatherModel = fatherService.buscar(codigo);
-        ChildModel childModel = childService.buscar(childCodigo);
+    public void associarDomainModel(@PathVariable String id, @PathVariable String childId) {
+        FatherModel fatherModel = fatherService.buscar(id);
+        ChildModel childModel = childService.buscar(childId);
         fatherModel.associarSubRecurso(nomeSubRecurso, childModel);
     }
 
-    @DeleteMapping("/{childCodigo}")
+    @DeleteMapping("/{childId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void DesassociarDomainModel(@PathVariable String codigo, @PathVariable String childCodigo) {
-        FatherModel fatherModel = fatherService.buscar(codigo);
-        ChildModel childModel = childService.buscar(childCodigo);
+    public void DesassociarDomainModel(@PathVariable String id, @PathVariable String childId) {
+        FatherModel fatherModel = fatherService.buscar(id);
+        ChildModel childModel = childService.buscar(childId);
         fatherModel.desassociarSubRecurso(nomeSubRecurso, childModel);
     }
 

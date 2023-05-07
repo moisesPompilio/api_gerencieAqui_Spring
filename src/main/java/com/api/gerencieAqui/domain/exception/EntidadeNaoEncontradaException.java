@@ -20,7 +20,7 @@ public class EntidadeNaoEncontradaException extends NegocioException {
 	}
 
 	public EntidadeNaoEncontradaException(String codigo) {
-		super(String.format(NAO_EXISTE_CODIGO, codigo));
+		super(NAO_EXISTE_CODIGO + codigo);
 	}
 
 	public EntidadeNaoEncontradaException(Class classe) {
