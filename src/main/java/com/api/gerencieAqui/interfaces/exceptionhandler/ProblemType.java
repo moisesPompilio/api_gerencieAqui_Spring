@@ -14,7 +14,8 @@ public enum ProblemType {
     PARAMETRO_INVALIDO("/parametro-invalido", "Parâmetro inválido"),
     MENSAGEM_INCOMPREENSIVEL("/mensagem-incompreensivel", "Mensagem incompreensível"),
     DADOS_INVALIDOS("/dados-invalidos", "Dados inválidos"),
-    SENHA_INCORRETA("/senha-incorreta", "Senha incorreta");
+    SENHA_INCORRETA("/senha-incorreta", "Senha incorreta"),
+    ID_INVALIDO("/id-invalido", "ID incorreta");
 
     public static final String URI_PADRAO = "https://gerencieaqui.com.br";
     private String title;

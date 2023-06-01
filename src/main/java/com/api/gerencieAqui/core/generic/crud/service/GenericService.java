@@ -4,7 +4,7 @@ import com.api.gerencieAqui.core.generic.crud.repository.GenericRepository;
 import com.api.gerencieAqui.core.generic.model.GenericEntity;
 import com.api.gerencieAqui.domain.exception.EntidadeEmUsoException;
 import com.api.gerencieAqui.domain.exception.EntidadeNaoEncontradaException;
-import com.api.gerencieAqui.domain.exception.IdInvalido;
+import com.api.gerencieAqui.domain.exception.IdInvalidoException;
 import com.api.gerencieAqui.domain.exception.NegocioException;
 import lombok.RequiredArgsConstructor;
 
@@ -61,7 +61,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
         } catch (DataIntegrityViolationException ex) {
             throw new EntidadeEmUsoException();
         } catch (IllegalArgumentException ex) {
-            throw new IdInvalido(id);
+            throw new IdInvalidoException(id);
         }
     }
 
@@ -70,7 +70,7 @@ public abstract class GenericService<DomainModel extends GenericEntity> {
             return repositorio.findById(UUID.fromString(id))
                     .orElseThrow(() -> new EntidadeNaoEncontradaException(id));
         } catch (IllegalArgumentException ex) {
-            throw new IdInvalido(id);
+            throw new IdInvalidoException(id);
         }
     }
 

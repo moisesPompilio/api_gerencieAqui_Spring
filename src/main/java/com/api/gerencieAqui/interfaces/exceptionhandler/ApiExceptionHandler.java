@@ -2,6 +2,7 @@ package com.api.gerencieAqui.interfaces.exceptionhandler;
 
 import com.api.gerencieAqui.domain.exception.EntidadeEmUsoException;
 import com.api.gerencieAqui.domain.exception.EntidadeNaoEncontradaException;
+import com.api.gerencieAqui.domain.exception.IdInvalidoException;
 import com.api.gerencieAqui.domain.exception.NegocioException;
 import com.api.gerencieAqui.domain.exception.SenhaIncorretaException;
 import com.api.gerencieAqui.domain.exception.negocio.CidadeNaoEncontradaException;
@@ -123,6 +124,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleSenhaIncorretaException(SenhaIncorretaException ex, WebRequest request) {
         HttpStatus statusCode = HttpStatus.BAD_REQUEST;
         ProblemType problemType = ProblemType.SENHA_INCORRETA;
+        String detail = ex.getMessage();
+
+        Problem problem = createProblemBuilder(statusCode, problemType, detail)
+                .userMessage(detail)
+                .build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), statusCode, request);
+    }
+
+    @ExceptionHandler(IdInvalidoException.class)
+    public ResponseEntity<?> handleIdInvalidoException(NegocioException ex, WebRequest request) {
+        HttpStatus statusCode = HttpStatus.BAD_REQUEST;
+        ProblemType problemType = ProblemType.ID_INVALIDO;
         String detail = ex.getMessage();
 
         Problem problem = createProblemBuilder(statusCode, problemType, detail)
