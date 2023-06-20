@@ -11,7 +11,8 @@ CREATE TABLE products (
   name TEXT UNIQUE NOT NULL,
   description TEXT,
   url_photo TEXT,
-  price FLOAT NOT NULL,
+  sale FLOAT NOT NULL,
+  cost  FLOAT NOT NULL,
   categories_id UUID NOT NULL,
   CONSTRAINT fk_categoriesid FOREIGN KEY (categories_id)
     REFERENCES categories (id)
