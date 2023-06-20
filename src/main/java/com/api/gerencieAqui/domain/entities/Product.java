@@ -6,7 +6,8 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.api.gerencieAqui.application.DTO.input.InputProductDTO;
+import com.api.gerencieAqui.application.models.input.ProductInput;
+import com.api.gerencieAqui.core.generic.model.GenericEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,7 +28,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "products")
-public class Product {
+public class Product implements GenericEntity {
     
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -44,20 +45,24 @@ public class Product {
     @NotEmpty
     private String urlPhoto;
 
-    @NotNull
-    @Column(name = "category_id")
-    private String categoryId;
+    @Column(name = "categories_id")
+    private UUID categoryId;
 
     @NotNull
     @Positive
-    private double price;
+    private double sale;
 
-    public void UpdateProduct(InputProductDTO inputProductDTO){
+    @NotNull
+    @Positive
+    private double cost;
+
+    public void UpdateProduct(ProductInput inputProductDTO){
         this.name = inputProductDTO.getName();
         this.description = inputProductDTO.getDescription();
         this.urlPhoto = inputProductDTO.getUrlPhoto();
         this.categoryId = inputProductDTO.getCategoryId();
-        this.price = inputProductDTO.getPrice();
+        this.sale = inputProductDTO.getSale();
+        this.cost = inputProductDTO.getCost();
     }
 
 }
