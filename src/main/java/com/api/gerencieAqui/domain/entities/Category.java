@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.api.gerencieAqui.application.DTO.input.InputCategoryDTO;
+import com.api.gerencieAqui.application.models.input.CategoryInput;
 import com.api.gerencieAqui.core.generic.model.GenericEntity;
 
 import jakarta.persistence.Entity;
@@ -41,7 +41,7 @@ public class Category implements GenericEntity {
         this.name = name;
         this.urlPhoto = urlPhoto;
     }
-    public void UpdateCategory(InputCategoryDTO inputCategoryDTO){
+    public void UpdateCategory(CategoryInput inputCategoryDTO){
         this.name = inputCategoryDTO.getName();
         this.urlPhoto = inputCategoryDTO.getUrlPhoto();
     }
