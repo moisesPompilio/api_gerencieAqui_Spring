@@ -6,13 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.0.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.api</groupId>
-	<artifactId>gerencieAqui</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>gerencieAqui</name>
-	<description>Demo project for Spring Boot</description>
+	<artifactId>calculate</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>calculate</name>
+	<description>Calculadora previdenciaria</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -69,7 +69,7 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
@@ -97,9 +97,22 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.hypersistence</groupId>
+			<artifactId>hypersistence-utils-hibernate-60</artifactId>
+			<version>3.5.2</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
+		<finalName>api</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -110,7 +123,10 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M7</version>
 				<configuration>
+				  <tagNameFormat>@{project.version}</tagNameFormat>
+                  <scmCommentPrefix />
 				  <skipTests>true</skipTests>
+				  <resume>false</resume>
 				</configuration>
 			  </plugin>
 		</plugins>

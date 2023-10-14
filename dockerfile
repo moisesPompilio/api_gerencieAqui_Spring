@@ -17,7 +17,7 @@ FROM openjdk
 WORKDIR /app
 
 # Copie o arquivo JAR da imagem de construção para esta imagem menor
-COPY --from=build /usr/src/app/target/gerencieAqui-0.0.1-SNAPSHOT.jar /app
+COPY --from=build /usr/src/app/target/api.jar /app
 
 # Defina o comando de inicialização da aplicação
-CMD ["java", "-jar", "gerencieAqui-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "api.jar"]
